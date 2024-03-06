@@ -1,0 +1,133 @@
+from django.contrib.auth.models import User
+from news.models import *
+from django.db.models import Sum, F
+
+
+
+1. 	user1 = User.objects.create_user('user1', password='password1')
+	user2 = User.objects.create_user('user2', password='password2')
+	
+
+2. 	user1 = User.objects.get(username='user1')
+	user2 = User.objects.get(username='user2')
+	
+	author1 = Author.objects.create(user=user1, rating=0)
+	author2 = Author.objects.create(user=user2, rating=0)
+	
+	
+3.	Category.objects.create(name='Спорт')
+	Category.objects.create(name='Политика')
+	Category.objects.create(name='Образование')
+	Category.objects.create(name='Наука')
+	
+	
+4.	author1 = Author.objects.get(id=1)
+	author2 = Author.objects.get(id=2)
+	
+	sport_category = Category.objects.get(name='Спорт')
+	education_category = Category.objects.get(name='Образование')
+	science_category = Category.objects.get(name='Наука')
+
+
+	article1 = Post.objects.create(author=author1, post_type='article', title='Олимпийские игры 2024', content='Победила дружба', rating=0)
+	article1.categories.add(sport_category)
+	
+	article2 = Post.objects.create(author=author2, post_type='article', title='Единый государственный экзамен', content='Все здадут как обычно!!!', rating=0)
+	article2.categories.add(education_category)
+	
+	news1 = Post.objects.create(author=author1, post_type='news', title='Знаменательная дата', content='Поздравляем всех женщин с 8 марта', rating=0)
+	news1.categories.add(science_category)
+	
+	
+5. 	article1 = Post.objects.get(id=1)
+	sport_category = Category.objects.get(name='Спорт')
+	education_category = Category.objects.get(name='Образование')
+	article1.categories.add(sport_category, education_category)
+
+
+6.	user1 = User.objects.get(username='user1')
+	user2 = User.objects.get(username='user2')
+	
+	post1 = Post.objects.get(id=1)
+	post2 = Post.objects.get(id=3)
+	
+	comment1 = Comment.objects.create(post=post1, user=user1, text='Очень интересно', rating=0)
+	comment2 = Comment.objects.create(post=post1, user=user2, text='Классно', rating=0)
+	comment3 = Comment.objects.create(post=post2, user=user1, text='Здорово!!!', rating=0)
+	comment4 = Comment.objects.create(post=post2, user=user2, text='Великолепно!', rating=0)
+	
+	
+7. 	post1 = Post.objects.get(id=1)
+	post2 = Post.objects.get(id=3)
+	comment1 = Comment.objects.get(id=4)
+	comment2 = Comment.objects.get(id=1)
+	post1.like()
+	post2.dislike()
+	comment1.like()
+	comment2.dislike()
+	
+	
+8. 	authors = Author.objects.all()
+
+	for author in authors:
+	    author.update_rating()
+	    
+	    
+9. 	best_author = Author.objects.all().order_by('-rating').first()
+
+	if best_author:
+    	   username = best_author.user.username
+    	   rating = best_author.rating
+    	   print(f"Лучший пользователь:")
+    	   print(f"Имя пользователя: {username}")
+    	   print(f"Рейтинг: {rating}")
+	else:
+    	   print("Нет пользователей")
+	
+	
+10. 	best_post = Post.objects.all().order_by('-rating').first()
+
+	if best_post:
+    	    date_added = best_post.created_at
+    	    author_username = best_post.author.user.username
+    	    rating = best_post.rating
+    	    title = best_post.title
+    	    preview = best_post.preview()
+    	    print("Лучшая статья:")
+    	    print(f"Дата добавления: {date_added}")
+    	    print(f"Имя автора: {author_username}")
+    	    print(f"Рейтинг: {rating}")
+    	    print(f"Заголовок: {title}")
+    	    print(f"Превью: {preview}")
+	else:
+    	    print("Нет статей")
+
+
+
+11. 	if best_post:
+    	    comments = Comment.objects.filter(post=best_post)
+
+    	    if comments:
+        	print("Все комментарии к лучшей статье:")
+        	for comment in comments:
+            	    date_added = comment.created_at
+            	    user = comment.user.username
+            	    rating = comment.rating
+            	    text = comment.text
+	            print(f"Дата добавления: {date_added}")
+   	            print(f"Пользователь: {user}")
+            	    print(f"Рейтинг: {rating}")
+            	    print(f"Текст: {text}")
+            	    print("------------")
+    	    else:
+        	print("Нет комментариев к этой статье")
+	else:
+    	    print("Нет статей")
+
+
+
+
+
+
+	
+	
