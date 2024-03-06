@@ -67,8 +67,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'news_portal',
-        'USER': 'pan',
-        'PASSWORD': 'bd!!<FPF22lfyys[33',
+        'USER': 'пользователь',
+        'PASSWORD': 'Ваш пароль',
         'HOST': 'localhost',
         'PORT': '5432',
     }
