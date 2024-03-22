@@ -1,0 +1,49 @@
+{% extends 'base/base_news.html' %}
+{% load bad_words %}
+{% load custom_tags %}
+
+
+{% block title %}Новости{% endblock %}
+
+{% block content %}
+    <h1>Новости</h1>
+    <hr>
+    <h4>По {{ post|length }} на странице</h4>
+    <hr>
+    {% if post %}
+        <table>
+            <tr>
+                <td>Заголовок</td>
+                <td>Дата публикации</td>
+                <td>Превью</td>
+            </tr>
+        {% for dpost in post %}
+            <tr>
+                <td>{{ dpost.title|censor }}</td>
+                <td>{{ dpost.published|date:'d M Y' }}</td>
+                <td>{{ dpost.content|censor|truncatewords:20 }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+        {% else %}
+        <h3>Новостей нет</h3>
+    {% endif %}
+    
+    {% if page_obj.has_previous %}
+    <a href="?{% url_replace page=1 %}">1</a>
+    {% if page_obj.previous_page_number != 1  %}
+        ...
+        <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+    {% endif %}
+{% endif %}
+
+{{ page_obj.number }}
+{% if page_obj.has_next %}
+    <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+    {% if page_obj.paginator.num_pages != page_obj.next_page_number %}
+        ...
+        <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+    {% endif %}    
+{% endif %}
+    
+{% endblock %}

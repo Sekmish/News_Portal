@@ -1,0 +1,18 @@
+{% extends 'base/base_news.html' %}
+
+{% block title %}{{ object_type }}{% endblock %}
+
+{% block content %}
+    <h1>{{ object_type }}</h1>
+    {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+         <a href="{% url 'news' %}">Вернуться к новостям</a>
+    {% else %}
+  <hr>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="save" />
+    </form>
+    {% endif %}
+{% endblock content %}

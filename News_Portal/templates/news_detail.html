@@ -1,0 +1,15 @@
+{% extends 'base/base_news.html' %}
+{% load bad_words %}
+
+
+{% block title %}Новости{% endblock %}
+
+
+{% block content %}
+    <h1>{{ post_detail.title }}</h1>
+    <hr>
+    <h4>{{ post_detail.published }}</h4>
+    <hr>
+    <p>{{ post_detail.content|censor }}</p>
+    <hr>
+{% endblock %}

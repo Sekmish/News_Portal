@@ -1,0 +1,17 @@
+{% extends 'base/base_news.html' %}
+
+{% block title %}{{ object_type }}{% endblock %}
+
+{% block content %}
+    <h1>{{ object_type }}</h1>
+    {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+         <a href="{% url 'news' %}">Вернуться к новостям</a>
+    {% else %}
+        <p>Вы уверены, что хотите удалить эту запись?</p>
+        <form method="post">
+            {% csrf_token %}
+            <input type="submit" value="Удалить">
+        </form>
+    {% endif %}
+{% endblock content %}
