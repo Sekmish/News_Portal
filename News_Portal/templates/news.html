@@ -10,25 +10,37 @@
     <hr>
     <h4>По {{ post|length }} на странице</h4>
     <hr>
+    {% if perms.news.add_post %}
+    <a href="{% url 'post_create' post_type='news' %}">Добавить новость</a>
+    <a href="{% url 'post_create' post_type='articles' %}">Добавить статью</a>
+    {% endif %}
     {% if post %}
         <table>
             <tr>
                 <td>Заголовок</td>
                 <td>Дата публикации</td>
                 <td>Превью</td>
+                {% if perms.news.change_post or perms.news.delete_post %}
+                <td>Действия</td>
+                {% endif %}
             </tr>
         {% for dpost in post %}
             <tr>
                 <td>{{ dpost.title|censor }}</td>
                 <td>{{ dpost.published|date:'d M Y' }}</td>
                 <td>{{ dpost.content|censor|truncatewords:20 }}</td>
+                <td>
+                    {% if perms.news.change_post %}
+                        <a href="{% url 'post_update' post_type=dpost.post_type pk=dpost.id %}">Изменить</a>
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </table>
         {% else %}
         <h3>Новостей нет</h3>
     {% endif %}
-    
+    {% if post %}
     {% if page_obj.has_previous %}
     <a href="?{% url_replace page=1 %}">1</a>
     {% if page_obj.previous_page_number != 1  %}
@@ -45,5 +57,5 @@
         <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
     {% endif %}    
 {% endif %}
-    
+{% endif %}    
 {% endblock %}

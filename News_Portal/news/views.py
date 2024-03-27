@@ -1,9 +1,11 @@
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
 from .filters import NewsFilter
 from .forms import PostForm
 from django.urls import reverse_lazy
 from django.http import HttpResponseBadRequest
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
 
@@ -19,6 +21,16 @@ class PostDetail(DetailView):
     model = Post
     template_name = 'news_detail.html'
     context_object_name = 'post_detail'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        post = self.get_object()
+        post_type = post.post_type
+
+        context['post_type'] = post_type
+
+        return context
 
 
 class PostSearch(ListView):
@@ -43,7 +55,8 @@ class PostSearch(ListView):
         return context
 
 
-class PostCreate(CreateView):
+class PostCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post', )
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
@@ -68,7 +81,8 @@ class PostCreate(CreateView):
         return context
 
 
-class PostUpdate(UpdateView):
+class PostUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.change_post', )
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
@@ -88,7 +102,8 @@ class PostUpdate(UpdateView):
         return context
 
 
-class PostDelete(DeleteView):
+class PostDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.delete_post', )
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('news')
