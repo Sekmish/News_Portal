@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Sum, F
+from django.db.models import Sum
 from django.urls import reverse
+
+
+
 
 class RatingMixin(models.Model):
     rating = models.IntegerField(default=0)
@@ -65,7 +68,6 @@ class Post(RatingMixin):
     categories = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=200)
     content = models.TextField()
-    rating = models.IntegerField()
     published = models.DateTimeField(auto_now=True, db_index=True)
 
 
@@ -110,8 +112,22 @@ class Comment(RatingMixin):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    rating = models.IntegerField()
 
     class Meta:
         verbose_name = "Комментрарий"
         verbose_name_plural = 'Комментарии'
+
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscriptions')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subscribers')
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.username} подписан на {self.category.name}'
+
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = 'Подписки'
+        unique_together = ('user', 'category')  # Гарантирует, что пользователь может подписаться на категорию только один раз.
+
+

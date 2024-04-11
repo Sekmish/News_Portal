@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
+    'django_apscheduler'
 ]
 
 SITE_ID = 1
@@ -78,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'news_portal',
         'USER': 'pan',
-        'PASSWORD': '',
+        'PASSWORD': 'bd!!<FPF22lfyys[33',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -138,6 +139,30 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "PanKutak@yandex.ru"
+EMAIL_HOST_PASSWORD = "jnevlrsvpplshsjn"
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = "pankutak@yandex.ru"
+
+SERVER_EMAIL = "pankutak@yandex.ru"
+MANAGERS = (
+    ('sekkutak', 'sekkutak@gmail.com'),
+    # ('pankutak', 'pankutak@yandex.ru'),
+)
+
+ADMINS = (
+    ('pankutak', 'pankutak@yandex.ru'),
+)
+
+EMAIL_SUBJECT_PREFIX = '[Новости]'
+
+SITE_DOMAIN = 'http://94.230.141.137'

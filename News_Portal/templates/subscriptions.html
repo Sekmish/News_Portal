@@ -1,0 +1,25 @@
+{% extends 'base/base_news.html' %}
+
+{% block title %}
+Subscriptions
+{% endblock title %}
+
+{% block content %}
+<h2>Подписки на категории</h2>
+{% for category in categories %}
+  <form method="post">
+    {% csrf_token %}
+    <div>
+    <hr>
+      <strong>{{ category.name }}</strong>
+      {% if category.is_subscribed %}
+        <button type="submit" name="action" value="unsubscribe">Отписаться</button>
+      {% else %}
+        <button type="submit" name="action" value="subscribe">Подписаться</button>
+      {% endif %}
+    <hr>
+      <input type="hidden" name="category_id" value="{{ category.id }}">
+    </div>
+  </form>
+{% endfor %}
+{% endblock %}

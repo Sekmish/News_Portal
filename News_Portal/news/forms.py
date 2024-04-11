@@ -20,7 +20,7 @@ class PostSearchForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['author', 'title', 'content', 'rating']
+        fields = ['author', 'title', 'content', 'rating', 'categories']
         widgets = {
             'rating': forms.HiddenInput(attrs={'value': 0}),
             'author': forms.Select(),
