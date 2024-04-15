@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.urls import reverse
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 
@@ -71,6 +73,7 @@ class Post(RatingMixin):
     published = models.DateTimeField(auto_now=True, db_index=True)
 
 
+
     def preview(self):
         try:
             return (self.content[:124] + '...') if len(self.content) > 124 else self.content
@@ -95,6 +98,12 @@ class Post(RatingMixin):
     class Meta:
         verbose_name = "Публикация"
         verbose_name_plural = 'Публикации'
+
+@receiver(post_save, sender=Post)
+def send_notification_on_post_create(sender, instance, created, **kwargs):
+    if created:
+        from .tasks import send_notification  # Импорт здесь, чтобы избежать циклической зависимости
+        send_notification.delay(instance.id)
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

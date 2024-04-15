@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 
+from celery.schedules import crontab
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -79,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'news_portal',
         'USER': 'pan',
-        'PASSWORD': 'bd!!<FPF22lfyys[33',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -146,23 +148,38 @@ ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = "PanKutak@yandex.ru"
-EMAIL_HOST_PASSWORD = "jnevlrsvpplshsjn"
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
-DEFAULT_FROM_EMAIL = "pankutak@yandex.ru"
+DEFAULT_FROM_EMAIL = ""
 
-SERVER_EMAIL = "pankutak@yandex.ru"
+SERVER_EMAIL = ""
 MANAGERS = (
-    ('sekkutak', 'sekkutak@gmail.com'),
-    # ('pankutak', 'pankutak@yandex.ru'),
+    ('', ''),
+  
 )
 
 ADMINS = (
-    ('pankutak', 'pankutak@yandex.ru'),
+    ('', ''),
 )
 
 EMAIL_SUBJECT_PREFIX = '[Новости]'
 
-SITE_DOMAIN = 'http://94.230.141.137'
+SITE_DOMAIN = 'http://'
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_BEAT_SCHEDULE = {
+    'send_weekly_newsletter': {
+        'task': 'news.tasks.send_weekly_newsletter',
+        'schedule': crontab(hour=8, minute=0, day_of_week=1),
+    },
+}
+
+
