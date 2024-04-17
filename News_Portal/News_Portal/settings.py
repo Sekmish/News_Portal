@@ -16,7 +16,7 @@ SECRET_KEY = 'django-insecure-me0hriyt@u2y!!#hjh@3+!*xuqen5=!*ki5vkg_lqll6syqke&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['94.230.141.137']
+ALLOWED_HOSTS = ['']
 
 
 # Application definition
@@ -158,7 +158,7 @@ DEFAULT_FROM_EMAIL = ""
 SERVER_EMAIL = ""
 MANAGERS = (
     ('', ''),
-  
+    # ('', ''),
 )
 
 ADMINS = (
@@ -180,6 +180,15 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'news.tasks.send_weekly_newsletter',
         'schedule': crontab(hour=8, minute=0, day_of_week=1),
     },
+}
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'cache_files'), # Указываем, куда будем сохранять кэшируемые файлы! Не забываем создать папку cache_files внутри папки с manage.py!
+        'TIMEOUT': 30,
+    }
 }
 
 

@@ -4,6 +4,7 @@ from django.db.models import Sum
 from django.urls import reverse
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.cache import cache
 
 
 
@@ -72,8 +73,6 @@ class Post(RatingMixin):
     content = models.TextField()
     published = models.DateTimeField(auto_now=True, db_index=True)
 
-
-
     def preview(self):
         try:
             return (self.content[:124] + '...') if len(self.content) > 124 else self.content
@@ -94,6 +93,10 @@ class Post(RatingMixin):
 
     def get_absolute_url(self):
         return reverse('post_detail', args=[str(self.id)])
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        cache.delete(f'post-{self.pk}')
 
     class Meta:
         verbose_name = "Публикация"

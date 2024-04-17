@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Exists, OuterRef
+from django.core.cache import cache
 
 
 
@@ -24,6 +25,16 @@ class PostDetail(DetailView):
     model = Post
     template_name = 'news_detail.html'
     context_object_name = 'post_detail'
+
+    def get_object(self, queryset=None):
+        cache_key = f'post-{self.kwargs["pk"]}'
+        post = cache.get(cache_key, None)
+
+        if not post:
+            post = super().get_object(queryset=queryset)
+            cache.set(cache_key, post)
+
+        return post
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
