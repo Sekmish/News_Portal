@@ -2,7 +2,7 @@ from django import template
 import re
 register = template.Library()
 
-UNWANTED_WORDS = {'пись', 'какаш', 'истор'}
+UNWANTED_WORDS = {'пись', 'какаш', 'истор', 'хрень'}
 
 UNWANTED_WORDS_PATTERN = re.compile(r'\b(?:\w*' + '\w*\w*\w*|\w*'.join(UNWANTED_WORDS) + r'\w*)\b', re.IGNORECASE)
 
