@@ -3,7 +3,6 @@ from news.models import Post
 from news.filters import NewsFilter
 
 
-
 class PostList(ListView):
     model = Post
     ordering = '-pk'

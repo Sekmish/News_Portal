@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-
+from .logging_config import *
 from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -14,9 +14,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-me0hriyt@u2y!!#hjh@3+!*xuqen5=!*ki5vkg_lqll6syqke&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['']
+ALLOWED_HOSTS = ['94.230.141.137']
 
 
 # Application definition
@@ -80,7 +80,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'news_portal',
-        'USER': '',
+        'USER': 'pan',
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '5432',
@@ -148,21 +148,21 @@ ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = ""
+EMAIL_HOST_USER = "@yandex.ru"
 EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
-DEFAULT_FROM_EMAIL = ""
+DEFAULT_FROM_EMAIL = "@yandex.ru"
 
-SERVER_EMAIL = ""
+SERVER_EMAIL = "@yandex.ru"
 MANAGERS = (
-    ('', ''),
-    # ('', ''),
+    ('', '@gmail.com'),
+    # ('', '@yandex.ru'),
 )
 
 ADMINS = (
-    ('', ''),
+    ('', '@yandex.ru'),
 )
 
 EMAIL_SUBJECT_PREFIX = '[Новости]'

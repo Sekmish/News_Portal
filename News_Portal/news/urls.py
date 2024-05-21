@@ -4,7 +4,7 @@ from .views import subscription_view
 from django.views.decorators.cache import cache_page
 
 urlpatterns = [
-    path('', cache_page(60)(list_views.PostList.as_view()), name='news'),
+    path('', list_views.PostList.as_view(), name='news'),
     path('<int:pk>', detail_view.PostDetail.as_view(), name='post_detail'),
     path('search/', list_views.PostSearchList.as_view()),
     path('<str:post_type>/create/', create_view.PostCreate.as_view(), name='post_create'),
