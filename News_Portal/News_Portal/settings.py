@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
-from .logging_config import *
 from celery.schedules import crontab
+import logging
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'news_portal',
         'USER': 'pan',
-        'PASSWORD': '',
+        'PASSWORD': 'bd!!<FPF22lfyys[33',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -148,26 +148,26 @@ ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = "@yandex.ru"
-EMAIL_HOST_PASSWORD = ""
+EMAIL_HOST_USER = "PanKutak@yandex.ru"
+EMAIL_HOST_PASSWORD = "jnevlrsvpplshsjn"
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
-DEFAULT_FROM_EMAIL = "@yandex.ru"
+DEFAULT_FROM_EMAIL = "pankutak@yandex.ru"
 
-SERVER_EMAIL = "@yandex.ru"
+SERVER_EMAIL = "pankutak@yandex.ru"
 MANAGERS = (
-    ('', '@gmail.com'),
-    # ('', '@yandex.ru'),
+    ('sekkutak', 'sekkutak@gmail.com'),
+    # ('pankutak', 'pankutak@yandex.ru'),
 )
 
 ADMINS = (
-    ('', '@yandex.ru'),
+    ('pankutak', 'pankutak@yandex.ru'),
 )
 
 EMAIL_SUBJECT_PREFIX = '[Новости]'
 
-SITE_DOMAIN = 'http://'
+SITE_DOMAIN = 'http://94.230.141.137'
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
@@ -186,9 +186,83 @@ CELERY_BEAT_SCHEDULE = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': os.path.join(BASE_DIR, 'cache_files'), # Указываем, куда будем сохранять кэшируемые файлы! Не забываем создать папку cache_files внутри папки с manage.py!
+        'LOCATION': os.path.join(BASE_DIR, 'cache_files'), # Указываем, куда будем сохранять кэшируемые файлы
         'TIMEOUT': 30,
     }
 }
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'general_file': {
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'general.log',
+            'formatter': 'verbose',
+        },
+        'errors_file': {
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'errors.log',
+            'formatter': 'verbose',
+        },
+        'security_file': {
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'security.log',
+            'formatter': 'verbose',
+        },
+        'mail_admins': {
+            'class': 'django.utils.log.AdminEmailHandler',
+            'level': 'ERROR',
+            'formatter': 'verbose',
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s [%(levelname)s] %(module)s %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'django.request': {
+            'handlers': ['mail_admins', 'errors_file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['mail_admins', 'errors_file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.template': {
+            'handlers': ['errors_file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['errors_file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.security': {
+            'handlers': ['security_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+    'root': {
+        'handlers': ['console', 'general_file'],
+        'level': 'DEBUG',
+    },
+}
+
 
 
