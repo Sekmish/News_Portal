@@ -198,33 +198,53 @@ LOGGING = {
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
+            'formatter': 'default',
+            'filters': ['debug_true'],
         },
         'general_file': {
             'class': 'logging.FileHandler',
             'filename': BASE_DIR / 'logs' / 'general.log',
-            'formatter': 'verbose',
+            'formatter': 'general',
+            'filters': ['debug_false'],
         },
         'errors_file': {
             'class': 'logging.FileHandler',
             'filename': BASE_DIR / 'logs' / 'errors.log',
-            'formatter': 'verbose',
+            'formatter': 'errors',
+            'filters': ['debug_false'],
         },
         'security_file': {
             'class': 'logging.FileHandler',
             'filename': BASE_DIR / 'logs' / 'security.log',
-            'formatter': 'verbose',
+            'formatter': 'security',
+            'filters': ['debug_false'],
         },
         'mail_admins': {
             'class': 'django.utils.log.AdminEmailHandler',
-            'level': 'ERROR',
-            'formatter': 'verbose',
+            'include_html': True,
+            'formatter': 'errors',
         },
     },
     'formatters': {
-        'verbose': {
-            'format': '%(asctime)s [%(levelname)s] %(module)s %(message)s',
-            'datefmt': '%Y-%m-%d %H:%M:%S',
+        'default': {
+            'format': '[%(levelname)s] %(message)s',
+        },
+        'general': {
+            'format': '[%(asctime)s] [%(levelname)s] [%(module)s] %(message)s',
+        },
+        'errors': {
+            'format': '[%(asctime)s] [%(levelname)s] %(message)s\n%(pathname)s\n%(exc_info)s',
+        },
+        'security': {
+            'format': '[%(asctime)s] [%(levelname)s] [%(module)s] %(message)s',
+        },
+    },
+    'filters': {
+        'debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
         },
     },
     'loggers': {
@@ -263,6 +283,3 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
-
-
-
