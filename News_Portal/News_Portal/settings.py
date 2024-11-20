@@ -153,7 +153,7 @@ EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
-DEFAULT_FROM_EMAIL = "pankutak@yandex.ru"
+DEFAULT_FROM_EMAIL = "@yandex.ru"
 
 SERVER_EMAIL = "@yandex.ru"
 MANAGERS = (
